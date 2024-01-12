@@ -20,12 +20,16 @@ const Map = () => {
     const map = useRef(null);
     const mapContainer = useRef(null); // initializes on div
     const mapDraw = useRef();
+    const mapGeolocate = useRef();
 
     // The async return of the navigation promise is causing a warning in the console.
     const [mapCenter, setMapCenter] = useRecoilState(recoilMapCenter);
     const [mapZoom, setMapZoom] = useRecoilState(recoilMapZoom);
 
     const onMapLoaded = useCallback(() => {
+
+        mapGeolocate.current.trigger();
+
         mapDraw.current = new MapboxDraw({
             displayControlsDefault: false,
             userProperties: true,
@@ -44,28 +48,6 @@ const Map = () => {
         map.current.addControl(mapDraw.current);
     }, []);
 
-    const getOperatorLocation = () => {
-        const loc = new Promise((success, error) => {
-                return navigator.geolocation.watchPosition(success, error);
-            }).catch(({message}) => {
-                console.warn(`${message} centering map on [0, 0]`);
-                return {coords: {latitude: 0, longitude: 0}}
-            });
-    
-        return loc;
-    };
-
-    useEffect(() => {
-        getOperatorLocation().then(({coords}) => {
-            const {
-                longitude,
-                latitude
-            } = coords;
-
-            setMapCenter([longitude, latitude]);
-        });
-    }, [])
-
     useEffect(() => {
         
         map.current = new MapboxGL.Map({
@@ -76,6 +58,17 @@ const Map = () => {
             touchZoomRotate: false,
             zoom: mapZoom
         });
+
+        mapGeolocate.current = new MapboxGL.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true,
+            showUserHeading: true
+        });
+
+        // Add operator position on the map
+        map.current.addControl(mapGeolocate.current);
 
         map.current.on('load', onMapLoaded);
 
