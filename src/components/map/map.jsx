@@ -1,4 +1,4 @@
-import { Suspense, useLayoutEffect, useCallback, useRef } from 'react';
+import { Suspense, useEffect, useCallback, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 
 import MapboxGL from 'mapbox-gl';
@@ -21,7 +21,7 @@ const Map = () => {
     const mapContainer = useRef(null); // initializes on div
     const mapDraw = useRef();
 
-    // The async return of the navigation promise is causing a warning in the console
+    // The async return of the navigation promise is causing a warning in the console.
     const [mapCenter, setMapCenter] = useRecoilState(recoilMapCenter);
     const [mapZoom, setMapZoom] = useRecoilState(recoilMapZoom);
 
@@ -44,7 +44,29 @@ const Map = () => {
         map.current.addControl(mapDraw.current);
     }, []);
 
-    useLayoutEffect(() => {
+    const getOperatorLocation = () => {
+        const loc = new Promise((success, error) => {
+                return navigator.geolocation.watchPosition(success, error);
+            }).catch(({message}) => {
+                console.warn(`${message} centering map on [0, 0]`);
+                return {coords: {latitude: 0, longitude: 0}}
+            });
+    
+        return loc;
+    };
+
+    useEffect(() => {
+        getOperatorLocation().then(({coords}) => {
+            const {
+                longitude,
+                latitude
+            } = coords;
+
+            setMapCenter([longitude, latitude]);
+        });
+    }, [])
+
+    useEffect(() => {
         
         map.current = new MapboxGL.Map({
             center: mapCenter,

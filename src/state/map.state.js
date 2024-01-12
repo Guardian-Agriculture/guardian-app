@@ -13,29 +13,9 @@ const saveSessionData = (key) => ({setSelf, onSet}) => {
     });
 };
 
-export const usersLocation = selector({
-    key: 'usersLocation',
-    get: async () => {
-        const { coords: {
-            longitude,
-            latitude,
-        }} = await new Promise((success, error) => {
-            navigator.geolocation.getCurrentPosition(success, error);
-        }).catch(({message}) => {
-            console.warn(`${message} centering map on [0, 0]`);
-            return {coords: {latitude: 0, longitude: 0}}
-        });
-
-        return [longitude, latitude];
-    }
-});
-
 export const recoilMapCenter = atom({
     key: 'recoilMapCenter',
-    default: selector({
-        key: 'getUsersLocation',
-        get: ({get}) => get(usersLocation)
-    }),
+    default: [0,0],
     effects: [saveSessionData('map-center')],
 });
 
