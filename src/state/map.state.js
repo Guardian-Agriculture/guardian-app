@@ -19,6 +19,12 @@ export const recoilMapCenter = atom({
     effects: [saveSessionData('map-center')],
 });
 
+export const recoilMapOperatorPosition = atom({
+    key: 'recoilMapOperatorPosition',
+    default: null,
+    effects: [saveSessionData('operator-position')],
+});
+
 export const recoilMapZoom = atom({
     key: 'recoilMapZoom',
     default: 18,

@@ -7,6 +7,7 @@ import { mapDrawStyles } from './map-draw-styles';
 
 import {
     recoilMapCenter,
+    recoilMapOperatorPosition,
     recoilMapZoom,
 } from '../../state/map.state';
 
@@ -22,12 +23,13 @@ const Map = () => {
     const mapDraw = useRef();
     const mapGeolocate = useRef();
 
-    // The async return of the navigation promise is causing a warning in the console.
     const [mapCenter, setMapCenter] = useRecoilState(recoilMapCenter);
+    const [mapOperatorPosition, setMapOperatorPosition] = useRecoilState(recoilMapOperatorPosition);
     const [mapZoom, setMapZoom] = useRecoilState(recoilMapZoom);
 
     const onMapLoaded = useCallback(() => {
 
+        // Fire the geolocation functionality
         mapGeolocate.current.trigger();
 
         mapDraw.current = new MapboxDraw({
@@ -63,18 +65,31 @@ const Map = () => {
             positionOptions: {
                 enableHighAccuracy: true
             },
-            trackUserLocation: true,
-            showUserHeading: true
+            trackUserLocation: true
         });
 
-        // Add operator position on the map
-        map.current.addControl(mapGeolocate.current);
+        mapGeolocate.current.on('geolocate', ({coords}) => {
+            if (coords) {
+                const {
+                    longitude,
+                    latitude
+                } = coords;
 
+                // Returns the geolocated coordinates
+                setMapOperatorPosition([longitude, latitude]);
+            }
+        });
+        mapGeolocate.current.on('error', error => console.error(error.message));
+
+        // Add geolocation controls to the map
+        // They need to be present but not visible in order to work
+        map.current.addControl(mapGeolocate.current);
+        
         map.current.on('load', onMapLoaded);
 
         return () => map.current.remove();
 
-    }, [map, mapZoom, mapCenter, onMapLoaded]);
+    }, [map, mapZoom, mapCenter, onMapLoaded, setMapOperatorPosition]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
