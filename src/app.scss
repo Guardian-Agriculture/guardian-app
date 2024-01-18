@@ -1,0 +1,21 @@
+.app {
+    height: 100vh;
+    position: relative;
+    width: 100vw;
+
+    &__hud {
+        display: flex;
+        height: 100vh;
+        pointer-events: none;
+        position: absolute;
+        width: 100vw;
+        z-index: 2;
+    }
+
+    &__map {
+        height: 100vh;
+        position: absolute;
+        width: 100vw;
+        z-index: 1;
+    }
+}

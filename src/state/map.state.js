@@ -1,32 +1,20 @@
-import { atom, selector } from 'recoil';
-
-const saveSessionData = (key) => ({setSelf, onSet}) => {
-    const savedValue = sessionStorage.getItem(key)
-    if (savedValue != null) {
-      setSelf(JSON.parse(savedValue));
-    }
-  
-    onSet((newValue, _, isReset) => {
-      isReset
-        ? sessionStorage.removeItem(key)
-        : sessionStorage.setItem(key, JSON.stringify(newValue));
-    });
-};
+import { atom } from 'recoil';
+import { saveSessionData } from '../common/saveSessionData';
 
 export const recoilMapCenter = atom({
-    key: 'recoilMapCenter',
-    default: [0,0],
-    effects: [saveSessionData('map-center')],
+	key: 'recoilMapCenter',
+	default: [0,0],
+	effects: [saveSessionData('map-center')],
 });
 
 export const recoilMapOperatorPosition = atom({
-    key: 'recoilMapOperatorPosition',
-    default: null,
-    effects: [saveSessionData('operator-position')],
+	key: 'recoilMapOperatorPosition',
+	default: null,
+	effects: [saveSessionData('operator-position')],
 });
 
 export const recoilMapZoom = atom({
-    key: 'recoilMapZoom',
-    default: 18,
-    effects: [saveSessionData('map-zoom')],
+	key: 'recoilMapZoom',
+	default: 18,
+	effects: [saveSessionData('map-zoom')],
 });

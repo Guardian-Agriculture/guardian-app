@@ -1,0 +1,15 @@
+.text-edit {
+    cursor: pointer;
+    overflow: hidden;
+    padding: 18.5px 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--small {
+        padding: 10.5px 14px;
+    }
+
+    &--editing {
+        padding: 0;
+    }
+}

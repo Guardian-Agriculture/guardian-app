@@ -1,30 +1,30 @@
-@import './scss/colors';
+@import './assets/scss/colors';
 
 @font-face {
     font-family: "RobotoBold";
     src: local("RobotoBold"),
-        url("./fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+        url("./assets/fonts/Roboto/Roboto-Bold.ttf") format("truetype");
     font-weight: 700;
 }
 
 @font-face {
     font-family: "RobotoMedium";
     src: local("RobotoMedium"),
-        url("./fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+        url("./assets/fonts/Roboto/Roboto-Medium.ttf") format("truetype");
     font-weight: 500;
 }
 
 @font-face {
     font-family: "RobotoRegular";
     src: local("RobotoRegular"),
-        url("./fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+        url("./assets/fonts/Roboto/Roboto-Regular.ttf") format("truetype");
     font-weight: 400;
 }
 
 @font-face {
     font-family: "RobotoThin";
     src: local("RobotoThin"),
-        url("./fonts/Roboto/Roboto-Thin.ttf") format("truetype");
+        url("./assets/fonts/Roboto/Roboto-Thin.ttf") format("truetype");
     font-weight: 100;
 }
 

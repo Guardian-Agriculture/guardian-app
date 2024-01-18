@@ -1,0 +1,15 @@
+@import '../../assets/scss/colors';
+
+.zones {
+    pointer-events: all;
+
+    &__header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid $gray91;
+        padding: 12px 0;
+        text-transform: capitalize;
+    }
+}

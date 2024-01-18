@@ -1,0 +1,17 @@
+@import '../../assets/scss/colors';
+
+.actions-panel {
+    background: rgba($gray9, 0.9);
+    color: $white;
+    display: flex;
+    height: 100%;
+    max-width: 400px;
+    width: 33%;
+
+    &__inner {
+        margin-top: 72px;
+        overflow: auto;
+        padding: 0 16px;
+        width: 100%;
+    }
+}
