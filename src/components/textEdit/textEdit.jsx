@@ -5,15 +5,29 @@ import './textEdit.scss';
 
 const TextEdit = (props) => {
     const {
+        active,
         className,
         size,
         tooltip,
-        value
+        value,
+        onBlur
     } = props;
+
     const [ field, setField ] = useState({
         edit: false,
         value: value
     });
+
+    const updateField = (e) => {
+        setField({
+            edit: false,
+            value: e.target.value
+        });
+
+        if (typeof onBlur === 'function') {
+            onBlur(e);
+        }
+    }
 
     return (
         <>
@@ -22,17 +36,14 @@ const TextEdit = (props) => {
                     autoFocus
                     className={`text-edit text-edit--editing ${size ? `text-edit--${size}` : ''} ${className}`}
                     defaultValue={field.value}
-                    onBlur={(e) => setField({
-                        edit: false,
-                        value: e.target.value
-                    })}
+                    onBlur={(e) => updateField(e)}
+                    onFocus={(e) => {
+                        e.target.select();
+                    }}
                     onKeyDown={(e) => {
                         switch(e.key) {
                             case 'Enter':
-                                setField({
-                                    edit: false,
-                                    value: e.target.value
-                                });
+                                updateField(e);
                                 break;
                             default:
                         }
@@ -42,14 +53,23 @@ const TextEdit = (props) => {
                 />
                 : <Tooltip 
                     className={`text-edit ${size ? `text-edit--${size}` : ''} ${className}`}
-                    title={tooltip}
-                    onClick={() => setField({...field, edit: true})}
+                    title={active ? tooltip : ''}
+                    onClick={() => {
+                        console.log('woah', active);
+                        if (active) {
+                            setField({...field, edit: true})
+                        }
+                    }}
                 >
                     <div>{field.value}</div>
                 </Tooltip>
             }
         </>
     )   
+}
+
+TextEdit.defaultProps = {
+    active: true
 }
 
 export default TextEdit;

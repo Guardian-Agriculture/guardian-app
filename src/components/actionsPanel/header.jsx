@@ -5,8 +5,6 @@ import { ContentCopy, ContentCut, ContentPaste, FileDownload, FileUpload, HelpCe
 import TextEdit from "../textEdit/textEdit";
 import GuardianLogo from '../../assets/images/logo/guardian-logo-solid.svg?react';
 
-import './header.scss';
-
 const Header = () => {
     const [headerMenu, setHeaderMenu] = useState(null);
 
@@ -14,15 +12,15 @@ const Header = () => {
 
     return (
         <>
-            <AppBar className='header' elevation={0}>
-                <GuardianLogo className='header__logo' />
+            <AppBar className='actions-panel__header' elevation={0}>
+                <GuardianLogo className='actions-panel__header-logo' />
                 <TextEdit 
-                    className='header__text-edit'
+                    className='actions-panel__header-text-edit'
                     tooltip='Edit job name'
                     value='Untitled Job' 
                 />
                 <IconButton 
-                    className='header__more' 
+                    className='actions-panel__header-more' 
                     disableRipple
                     onClick={(e) => setHeaderMenu(e.currentTarget)}
                 >
@@ -32,7 +30,7 @@ const Header = () => {
             <Menu
                 anchorEl={headerMenu}
                 anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                className='header__menu'
+                className='actions-panel__header-menu'
                 onClose={onCloseMenu}
                 onClick={onCloseMenu}
                 open={Boolean(headerMenu)}

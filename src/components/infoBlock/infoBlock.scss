@@ -1,0 +1,20 @@
+.info-block {
+    padding: 16px;
+    width: 33%;
+
+    &__title {
+        font-size: 18px;
+        text-transform: capitalize;
+    }
+
+    &__value {
+        font-size: 40px;
+    }
+
+    &__unit {
+        display: inline-block;
+        font-size: 16px;
+        margin: 2px 0 0 4px;
+        vertical-align: text-top;
+    }
+}

@@ -4,14 +4,64 @@
     background: rgba($gray9, 0.9);
     color: $white;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100%;
     max-width: 400px;
     width: 33%;
 
     &__inner {
-        margin-top: 72px;
+        margin-top: 56px;
         overflow: auto;
         padding: 0 16px;
         width: 100%;
+    }
+
+    &__header {
+        &[class*=MuiAppBar] {
+            align-items: center;
+            background: none;
+            flex-direction: row;
+            left: 0;
+            max-width: 400px;
+            padding: 0px 16px;
+            pointer-events: all;
+        }
+    
+        &-logo {
+            display: block;
+            width: 100%;
+            max-width: 40px;
+            max-height: 40px;
+            fill: white;
+        }
+    
+        &-text-edit {
+            flex: 1 1 auto;
+            margin-right: 16px;
+        }
+    
+        &-more {
+            margin-left: auto;
+        }
+    }
+}
+
+.job-info {
+    display: flex;
+
+    &__complete {
+        p {
+            margin: 0;
+        }
+
+        &-title {
+            font-size: 26px;
+        }
+    }
+
+    &__percentage {
+        font-size: 40px;
+        margin-left: auto;
     }
 }

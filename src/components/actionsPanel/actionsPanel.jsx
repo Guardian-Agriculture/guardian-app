@@ -1,15 +1,23 @@
-import Header from "./header";
-import Zone from "./zones";
+import ActionsPanelHeader from "./header";
+import Zones from "./zones";
 
 import './actionsPanel.scss';
+import JobActions from "./jobActions";
+import JobInfo from "./jobInfo";
+import JobValidation from "./jobValidation";
 
 const ActionsPanel = () => {
     return (
         <>
-            <Header />
+            <ActionsPanelHeader />
             <div className="actions-panel">
                 <div className="actions-panel__inner">
-                    <Zone />
+                    <Zones />
+                </div>
+                <div className="actions-panel__actions">
+                    <JobValidation />
+                    <JobInfo />
+                    <JobActions />
                 </div>
             </div>
         </>

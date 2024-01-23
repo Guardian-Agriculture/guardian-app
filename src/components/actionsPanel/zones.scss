@@ -1,4 +1,5 @@
 @import '../../assets/scss/colors';
+@import '../../assets/scss/easings';
 
 .zones {
     pointer-events: all;
@@ -11,5 +12,86 @@
         border-bottom: 1px solid $gray91;
         padding: 12px 0;
         text-transform: capitalize;
+    }
+}
+
+.zone {
+    border: 1px solid $gray49;
+    border-radius: 5px;
+    margin-top: 16px;
+
+    &__header {
+        align-items: center;
+        display: flex;
+        width: 100%;
+
+        &-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-status {
+            font-size: 14px;
+            padding: 0 0 0 12px;
+        }
+    }
+
+    &__accordion[class*=MuiIconButton] {
+        margin-left: auto;
+        max-height: 36px;
+    }
+
+    &__actions {
+        border-top: 1px solid $gray49;
+        padding: 16px;
+        text-align: right;
+    }
+
+    .markers,
+    .boundaries {
+        .list-item-add__label {
+            padding-left: 16px;
+        }
+    }
+
+    .markers {
+        &__header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border-bottom: 1px solid $gray91;
+            padding: 12px 0;
+            text-transform: capitalize;
+        }
+    }
+
+    .marker,
+    .boundary {
+        align-items: center;
+        display: flex;
+        transition: background 0.15s $easeInOutQuad;
+
+        &:hover {
+            background: rgba($white, 0.13);
+        }
+
+        &--active,
+        &--active:hover {
+            background: rgba($white, 0.09);
+        }
+
+        *[class*=accordion] {
+            margin-left: auto;
+        }
+
+        &__content {
+            padding: 0 16px;
+        }
+
+        &__action {
+            text-align: right;
+            padding: 16px 0;
+        }
     }
 }
