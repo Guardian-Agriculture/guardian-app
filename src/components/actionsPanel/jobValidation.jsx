@@ -1,6 +1,8 @@
 const JobValidation = () => {
     return (
-        <div></div>
+        <div className="job-validation">
+            This is the validation panel
+        </div>
     )
 }
 

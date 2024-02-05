@@ -1,0 +1,62 @@
+@import "../../assets/scss/colors";
+@import "../../assets/scss/easings";
+
+.map-actions-panel {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 8px;
+
+    .geocoder {
+        background: rgba($white, 0.9);
+        border-radius: 4px;
+        margin-bottom: 8px;
+        max-width: 320px;
+        overflow: hidden;
+        pointer-events: all;
+        width: 36px;
+        height: 36px;
+        transition: height 0.3s $easeInOutQuad, width 0.3s $easeInOutQuad;
+
+        &:hover,
+        &--focused {
+            width: 100%;
+            height: 48px;
+
+            .geocoder__search-icon {
+                height: 48px;
+            }
+        }
+
+        &__search {
+            position: relative;
+    
+            &-icon {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: height 0.3s $easeInOutQuad;
+
+                svg {
+                    fill: rgba(0, 0, 0, 0.54);
+                }
+            }
+        }    
+    }
+
+    &__controls {
+        margin-right: auto;
+    }
+    
+    &__map-controls,
+    &__draw-controls {
+        pointer-events: all;
+        background: rgba($white, 0.9);
+    }
+
+}

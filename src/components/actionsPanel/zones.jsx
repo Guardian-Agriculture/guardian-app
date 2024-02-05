@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Button, Collapse } from '@mui/material';
-import { recoilZones } from '../../state/actions.state';
+import { recoilZones, recoilAddZone, recoilDeleteZone, recoilActiveItem } from '../../state/actions.state';
+import {
+    recoilDrawReference,
+} from '../../state/map.state';
 import { TransitionGroup } from 'react-transition-group';
 import { IconButton } from '@mui/material';
 import ListItemAdd from '../listItemAdd/listItemAdd';
@@ -13,26 +16,18 @@ import { ArrowDropDown, ArrowDropUp, Delete, PlayArrow, Visibility, VisibilityOf
 
 import './zones.scss';
 
+
 const Zones = () => {
 
-    const [ zones, setZones ] = useRecoilState(recoilZones);
-    const creationDate = Date.now(); // Mapbox draw hates non integers in IDs ¯\_(ツ)_/¯
-
-    const addZone = () => {
-        setZones([...zones, {
-            boundaries: [],
-            id: creationDate,
-            markers: [],
-            value: 'Untitled Zone'
-        }]);
-    }
+    const zones = useRecoilValue(recoilZones);
+    const addZone = useSetRecoilState(recoilAddZone);
 
     return (
         <div className='zones'>
-            <ListItemAdd label='Zone' onClick={addZone} />
+            <ListItemAdd label='Zone' onClick={() => addZone()} />
             <div className='zones__content'>
                 <TransitionGroup>
-                    {zones && zones.map((zone, i) => {
+                    {zones && zones.map((zone) => {
                         return (
                             <Collapse key={zone.id}>
                                 <Zone {...zone} />
@@ -49,11 +44,10 @@ const Zone = (props) => {
     const [ zones, setZones ] = useRecoilState(recoilZones);
     const [ dropDown, setDropDown ] = useState(true);
     const [ zoneVisibility, setZoneVisibility ] = useState(true);
+    const activeItem = useRecoilValue(recoilActiveItem);
+    const mapDraw = useRecoilValue(recoilDrawReference);
 
-    const deleteZone = () => {
-        const filteredZones = zones.filter(z => z.id !== props.id);
-        setZones(filteredZones);
-    }
+    const deleteZone = useSetRecoilState(recoilDeleteZone);
 
     const updateZone = (e) => {
         const updatedZones = zones.map(z => {
@@ -66,8 +60,15 @@ const Zone = (props) => {
         setZones(updatedZones);
     }
 
+    const hasActiveItem = (x) => {
+        return JSON.stringify(props).includes(activeItem);
+    }
+
     return (
-        <div className='zone'>
+        <div 
+            className={`zone ${hasActiveItem() ? `zone--active` : ''}`}
+            tabIndex={0}
+        >
             <div className='zone__header'>
                 <IconButton
                     onClick={() => setZoneVisibility(!zoneVisibility)}
@@ -105,7 +106,10 @@ const Zone = (props) => {
             <div className='zone__actions'>
                 <Button
                     className='zone__header-delete'
-                    onClick={deleteZone}
+                    onClick={() => {
+                        mapDraw.current.changeMode('simple_select');
+                        deleteZone(props.id);
+                    }}
                     endIcon={
                         <Delete fontSize='small' />
                     }

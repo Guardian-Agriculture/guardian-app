@@ -55,7 +55,6 @@ const TextEdit = (props) => {
                     className={`text-edit ${size ? `text-edit--${size}` : ''} ${className}`}
                     title={active ? tooltip : ''}
                     onClick={() => {
-                        console.log('woah', active);
                         if (active) {
                             setField({...field, edit: true})
                         }

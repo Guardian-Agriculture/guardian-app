@@ -5,6 +5,7 @@ import { guardianTheme } from './common/guardianTheme';
 
 import './app.scss';
 import InfoPanel from './components/infoPanel/infoPanel';
+import MapActionsPanel from './components/mapActionsPanel/mapActionsPanel';
 
 const App = () => {
 	return (
@@ -12,6 +13,7 @@ const App = () => {
 			<div className='app'>
 				<div className='app__hud'>
 					<ActionsPanel />
+					<MapActionsPanel />
 					<InfoPanel />
 				</div>
 				<Map />

@@ -14,7 +14,7 @@ const ActionsPanel = () => {
                 <div className="actions-panel__inner">
                     <Zones />
                 </div>
-                <div className="actions-panel__actions">
+                <div className="actions-panel__bottom">
                     <JobValidation />
                     <JobInfo />
                     <JobActions />

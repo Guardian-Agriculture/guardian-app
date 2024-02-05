@@ -18,3 +18,13 @@ export const recoilMapZoom = atom({
 	default: 18,
 	effects: [saveSessionData('map-zoom')],
 });
+
+export const recoilMapDrawMode = atom({
+	key: 'recoilMapDrawMode',
+	default: 'simple_select'
+});
+
+export const recoilDrawReference = atom({
+	key: 'recoilDrawReference',
+	default: null
+})

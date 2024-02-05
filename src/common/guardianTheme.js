@@ -23,3 +23,9 @@ export const guardianTheme = createTheme({
 		}
 	}
 });
+
+export const lightTheme = createTheme({
+	palette: {
+        mode: 'light',
+    },
+});

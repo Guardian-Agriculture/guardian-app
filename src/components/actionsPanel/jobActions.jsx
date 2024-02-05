@@ -10,6 +10,22 @@ const JobActions = () => {
             >
                 <PlayArrow fontSize='large' />
             </IconButton>
+            <IconButton
+                className='job-action__start'
+                onClick={() => {}}
+            >RTL</IconButton>
+            <IconButton
+                className='job-action__start'
+                onClick={() => {}}
+            >LIP</IconButton>
+            <IconButton
+                className='job-action__start'
+                onClick={() => {}}
+            >EL</IconButton>
+            <IconButton
+                className='job-action__start'
+                onClick={() => {}}
+            >DE</IconButton>
         </div>
     )
 }

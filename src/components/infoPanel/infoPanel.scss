@@ -1,23 +1,30 @@
 @import '../../assets/scss/colors';
+@import '../../assets/scss/easings';
 
 .info-panel {
-    background: rgba($gray9, 0.9);
     color: $white;
     display: flex;
+    flex-direction: column;
     height: 100%;
     max-width: 400px;
-    padding: 0 16px;
     width: 33%;
+    transition: width 0.3s $easeInOutQuad;
+
+    &--closed {
+        width: 0%;
+    }
 
     &__header {
         &[class*=MuiAppBar] {
             align-items: center;
-            background: none;
+            background: rgba($gray9, 0.9);
             flex-direction: row;
-            max-width: 400px;
+            margin: 8px;
+            max-width: 384px;
             min-height: 56px;
             padding: 0 16px;
             pointer-events: all;
+            border-radius: 28px;
         }
     }
 
@@ -26,8 +33,9 @@
     }
 
     &__inner {
-        margin-top: 56px;
-        width: 100%;
+        padding: 70px 16px 0 16px;
+        width: 400px;
+        background: rgba($gray9, 0.6);
     }
 
     &__aircraft {

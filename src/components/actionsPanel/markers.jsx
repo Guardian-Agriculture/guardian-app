@@ -1,5 +1,5 @@
-import { useRecoilState } from "recoil";
-import { recoilZones } from '../../state/actions.state';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
+import { recoilZones, recoilActiveItem } from '../../state/actions.state';
 import ListItemAdd from '../listItemAdd/listItemAdd';
 import { TransitionGroup } from "react-transition-group";
 import { Button, Collapse, FormControl, IconButton, MenuItem, Stack, TextField } from "@mui/material";
@@ -13,11 +13,13 @@ const Markers = (props) => {
     } = props;
     
     const [ zones, setZones ] = useRecoilState(recoilZones);
+    const setActiveItem = useSetRecoilState(recoilActiveItem);
     const creationDate = Date.now();
 
     const addMarker = () => {
         const updatedZone = {...props, markers: [...markers, {id: creationDate}]};
         updateZones(updatedZone);
+        setActiveItem(creationDate);
     }
 
     const updateZones = (updatedZone) => {
@@ -28,21 +30,12 @@ const Markers = (props) => {
         setZones(updatedZones);
     }
 
-    const deleteMarker = (id) => {
-        const updatedZone = {...props, markers: markers.filter(m => m.id !== id)};
-        updateZones(updatedZone);
+    const focusMarker = (id) => {
+        setActiveItem(id);
     }
 
-    const focusMarker = (id) => {
-        const updatedMarkers = markers.map((marker) => {
-            const markerClone = {...marker};
-            markerClone.active = false;
-            if (markerClone.id === id) {
-                markerClone.active = true;
-            }
-            return markerClone;
-        });
-        const updatedZone = {...props, markers: updatedMarkers}
+    const deleteMarker = (id) => {
+        const updatedZone = {...props, markers: markers.filter(m => m.id !== id)};
         updateZones(updatedZone);
     }
 
@@ -51,12 +44,20 @@ const Markers = (props) => {
             <ListItemAdd label='Marker' onClick={addMarker} />
             <div className="markers__content">
                 <TransitionGroup>
-                    {markers && markers.map((marker) => {
+                    {markers && markers.map((marker, i) => {
                         return (
-                            <Collapse key={marker.id}>
+                            <Collapse key={i}>
                                 <Marker 
-                                    onDelete={deleteMarker}
                                     onFocus={focusMarker}
+                                    onDelete={deleteMarker}
+                                    onKeyDown={(e) => {
+                                        switch(e.key) {
+                                            case 'Delete':
+                                                deleteMarker(marker.id);
+                                                break;
+                                            default:
+                                        }
+                                    }}
                                     {...marker} 
                                 />
                             </Collapse>
@@ -70,20 +71,23 @@ const Markers = (props) => {
 
 const Marker = (props) => {
     const {
+        onFocus,
         onDelete,
-        onFocus
+        onKeyDown,
     } = props;
     const [ dropDown, setDropDown ] = useState(false);
+    const activeItem = useRecoilValue(recoilActiveItem);
 
     return (
         <>
             <div 
-                className={`marker ${props.active ? `marker--active` : ''}`}
+                className={`marker ${props.id === activeItem ? `marker--active` : ''}`}
                 onFocus={() => onFocus(props.id)}
+                onKeyDown={onKeyDown}
                 tabIndex='0'
             >
                 <TextEdit 
-                    active={props.active}
+                    active={props.id === activeItem}
                     className='marker__text-edit'
                     tooltip='Edit marker name'
                     value='Untitled marker'
@@ -102,9 +106,9 @@ const Marker = (props) => {
                     <Stack spacing={1}>
                         <FormControl fullWidth>
                             <TextField
-                                select
+                                defaultValue='operator'
                                 label='Marker type'
-                                labelId={`label-${props.id}`}
+                                select
                                 variant="filled"
                             >
                                 <MenuItem value='operator'>Operator</MenuItem>

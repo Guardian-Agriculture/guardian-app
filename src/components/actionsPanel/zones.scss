@@ -9,16 +9,21 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
-        border-bottom: 1px solid $gray91;
         padding: 12px 0;
         text-transform: capitalize;
     }
 }
 
 .zone {
-    border: 1px solid $gray49;
-    border-radius: 5px;
+    background: rgba($gray9, 0.9);
+    border-radius: 4px;
     margin-top: 16px;
+    padding: 0 16px;
+    transition: background 0.15s $easeInOutQuad;
+
+    &--active {
+        background: rgba($gray16, 0.9);
+    }
 
     &__header {
         align-items: center;
@@ -43,8 +48,12 @@
 
     &__actions {
         border-top: 1px solid $gray49;
-        padding: 16px;
+        padding: 16px 0;
         text-align: right;
+    }
+
+    &__control {
+        padding: 16px 0;
     }
 
     .markers,
