@@ -48,11 +48,10 @@ const Recipe = () => {
                 </Menu>
             </p>
             <Stack spacing={1}>
-                <TextField label='Gallons per acre' variant='filled' />
-                <TextField label='Angle' variant='filled' />
-                <TextField label='Width' variant='filled' />
-                <TextField label='Offset' variant='filled' />
-                <TextField label='Overlap' variant='filled' />
+                <TextField size='small' label='Gallons per acre' variant='filled' />
+                <TextField size='small' label='Width' variant='filled' />
+                <TextField size='small' label='Offset' variant='filled' />
+                <TextField size='small' label='Overlap' variant='filled' />
                 <FormControl fullWidth>
                     <FormControlLabel
                         value="true"

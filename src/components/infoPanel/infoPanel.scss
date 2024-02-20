@@ -10,10 +10,6 @@
     width: 33%;
     transition: width 0.3s $easeInOutQuad;
 
-    &--closed {
-        width: 0%;
-    }
-
     &__header {
         &[class*=MuiAppBar] {
             align-items: center;
@@ -22,9 +18,10 @@
             margin: 8px;
             max-width: 384px;
             min-height: 56px;
-            padding: 0 16px;
+            padding: 0 8px;
             pointer-events: all;
             border-radius: 28px;
+            width: calc(33% - 16px);
         }
     }
 
@@ -32,10 +29,20 @@
         margin-left: auto;
     }
 
+    &__no-aircraft {
+        display: flex;
+        align-items: center;
+
+        &-icon {
+            margin: 0 8px;
+        }
+    }
+
     &__inner {
         padding: 70px 16px 0 16px;
         width: 400px;
         background: rgba($gray9, 0.6);
+        border-radius: 0 0 0 36px;
     }
 
     &__aircraft {

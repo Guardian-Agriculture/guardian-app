@@ -41,12 +41,12 @@ const Markers = (props) => {
 
     return (
         <div className="markers">
-            <ListItemAdd label='Marker' onClick={addMarker} />
+            <ListItemAdd label='Markers' onClick={addMarker} />
             <div className="markers__content">
                 <TransitionGroup>
-                    {markers && markers.map((marker, i) => {
+                    {markers && [...markers].reverse().map((marker, i) => {
                         return (
-                            <Collapse key={i}>
+                            <Collapse key={marker.id+i}>
                                 <Marker 
                                     onFocus={focusMarker}
                                     onDelete={deleteMarker}
@@ -93,6 +93,14 @@ const Marker = (props) => {
                     value='Untitled marker'
                     size='small'
                 />
+                <div className='marker__actions'>
+                    <IconButton
+                        className='marker__delete'
+                        onClick={() => onDelete(props.id)}
+                    >
+                        <Delete fontSize='small' />
+                    </IconButton>
+                </div>
                 <IconButton
                     className='marker__accordion'
                     onClick={() => setDropDown(!dropDown)}
@@ -102,7 +110,6 @@ const Marker = (props) => {
             </div>
             <Collapse in={dropDown} timeout="auto">
                 <div className="marker__content">
-                    <p>Drag and drop the marker</p>
                     <Stack spacing={1}>
                         <FormControl fullWidth>
                             <TextField
@@ -110,27 +117,16 @@ const Marker = (props) => {
                                 label='Marker type'
                                 select
                                 variant="filled"
+                                size='small'
                             >
                                 <MenuItem value='operator'>Operator</MenuItem>
                                 <MenuItem value='launch'>Launch</MenuItem>
                                 <MenuItem value='guided path'>Guided Path</MenuItem>
                             </TextField>
                         </FormControl>
-                        <TextField label='Latitude' variant='filled' />
-                        <TextField label='Longitude' variant='filled' />
+                        <TextField size='small' label='Latitude' variant='filled' />
+                        <TextField size='small' label='Longitude' variant='filled' />
                     </Stack>
-                    <div className="marker__action">
-                        <Button
-                            className='boundary__delete'
-                            endIcon={
-                                <Delete fontSize='small' />
-                            }
-                            onClick={() => onDelete(props.id)}
-                            variant='contained'
-                        >
-                            Delete Marker 
-                        </Button>
-                    </div>
                 </div>
             </Collapse>
         </>

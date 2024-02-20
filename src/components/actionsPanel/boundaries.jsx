@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import { 
     recoilZones, 
@@ -11,8 +11,8 @@ import {
 } from '../../state/map.state';
 import ListItemAdd from "../listItemAdd/listItemAdd";
 import { TransitionGroup } from "react-transition-group";
-import { Button, Collapse, FormControl, IconButton, MenuItem, TextField } from "@mui/material";
-import { ArrowDropDown, ArrowDropUp, Delete, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Button, Collapse, FormControl, IconButton, MenuItem, Stack, TextField } from "@mui/material";
+import { ArrowDropDown, ArrowDropUp, Delete, Info, Visibility, VisibilityOff } from "@mui/icons-material";
 import TextEdit from "../textEdit/textEdit";
 import Recipe from "./recipe";
 
@@ -100,12 +100,12 @@ const Boundaries = (props) => {
 
     return (
         <div className="boundaries">
-            <ListItemAdd label='Boundary' onClick={addBoundary} />
+            <ListItemAdd label='Boundaries' onClick={addBoundary} />
             <div className="boundaries__content">
                 <TransitionGroup>
-                    {boundaries && boundaries.map((boundary, i) => {
+                    {boundaries && [...boundaries].reverse().map((boundary, i) => {
                         return (
-                            <Collapse key={i}>
+                            <Collapse key={boundary.id+i}>
                                 <Boundary 
                                     onFocus={focusBoundary}
                                     onChange={onChangeBoundary}
@@ -137,7 +137,7 @@ const Boundary = (props) => {
         onDelete,
         onKeyDown,
     } = props;
-    const [ dropDown, setDropDown ] = useState(false);
+    const [ dropDown, setDropDown ] = useState(true);
     const [ boundaryVisibility, setBoundaryVisibility ] = useState(true);
     const activeItem = useRecoilValue(recoilActiveItem);
     
@@ -161,6 +161,14 @@ const Boundary = (props) => {
                     value='Untitled boundary'
                     size='small'
                 />
+                <div className='boundary__actions'>
+                    <IconButton
+                        className='boundary__delete'
+                        onClick={() => onDelete(props)}
+                    >
+                        <Delete fontSize='small' />
+                    </IconButton>
+                </div>
                 <IconButton
                     className='boundary__accordion'
                     onClick={() => setDropDown(!dropDown)}
@@ -170,33 +178,31 @@ const Boundary = (props) => {
             </div>
             <Collapse in={dropDown} timeout="auto">
                 <div className="boundary__content">
-                    <p>X acres selected</p>
-                    <FormControl fullWidth>
-                        <TextField
-                            select
-                            defaultValue='sprayFence'
-                            label='Boundary type'
-                            variant='filled'
-                            onChange={(e) => onChange(e, props)}
-                        >
-                            <MenuItem value='sprayFence'>Spray Fence</MenuItem>
-                            <MenuItem value='sprayExclusion'>Spray Exclusion</MenuItem>
-                            <MenuItem value='flightExclusion'>Flight Exclusion</MenuItem>
-                        </TextField>
-                    </FormControl>
-                    <Recipe />
-                    <div className="boundary__action">
-                        <Button
-                            className='boundary__delete'
-                            endIcon={
-                                <Delete fontSize='small' />
-                            }
-                            onClick={() => onDelete(props)}
-                            variant='contained'
-                        >
-                            Delete Boundary
-                        </Button>
-                    </div>
+                    <Stack spacing={1}>
+                        {!props.features && <p><Info /> Draw boundary on the map</p>}
+                        {props.features && 
+                            <FormControl fullWidth>
+                                <TextField
+                                    select
+                                    defaultValue='sprayFence'
+                                    label='Boundary type'
+                                    variant='filled'
+                                    onChange={(e) => onChange(e, props)}
+                                    size='small'
+                                >
+                                    <MenuItem value='sprayFence'>Spray Fence</MenuItem>
+                                    <MenuItem value='sprayExclusion'>Spray Exclusion</MenuItem>
+                                    <MenuItem value='flightExclusion'>Flight Exclusion</MenuItem>
+                                </TextField>
+                            </FormControl>
+                        }
+                        {props.type === 'sprayFence' &&
+                            <>
+                                <TextField size='small' label='Angle' variant='filled' />
+                                <Recipe />
+                            </>
+                        }
+                    </Stack>
                 </div>
             </Collapse>
         </>

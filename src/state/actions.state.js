@@ -2,6 +2,16 @@ import { atom, selector } from 'recoil';
 import { saveSessionData } from '../common/saveSessionData';
 import { recoilDrawReference } from './map.state';
 
+export const recoilActionsPanelOpen = atom({
+    key: 'recoilActionsPanelOpen',
+    default: false
+});
+
+export const recoilJobMode = atom({
+    key: 'recoilJobMode',
+    default: 'plan'
+});
+
 export const recoilZones = atom({
     key: 'recoilZones',
     default: [],

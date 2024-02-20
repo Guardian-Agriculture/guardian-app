@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { Button, Collapse } from '@mui/material';
-import { recoilZones, recoilAddZone, recoilDeleteZone, recoilActiveItem } from '../../state/actions.state';
+import { Collapse, IconButton } from '@mui/material';
+import { recoilZones, recoilAddZone, recoilDeleteZone, recoilActiveItem, recoilJobMode } from '../../state/actions.state';
 import {
     recoilDrawReference,
 } from '../../state/map.state';
 import { TransitionGroup } from 'react-transition-group';
-import { IconButton } from '@mui/material';
 import ListItemAdd from '../listItemAdd/listItemAdd';
 import Markers from './markers';
 import Boundaries from './boundaries';
 import TextEdit from '../textEdit/textEdit';
 
-import { ArrowDropDown, ArrowDropUp, Delete, PlayArrow, Visibility, VisibilityOff } from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp, Delete, Visibility, VisibilityOff } from '@mui/icons-material';
 
 import './zones.scss';
 
@@ -24,17 +23,21 @@ const Zones = () => {
 
     return (
         <div className='zones'>
-            <ListItemAdd label='Zone' onClick={() => addZone()} />
-            <div className='zones__content'>
-                <TransitionGroup>
-                    {zones && zones.map((zone) => {
-                        return (
-                            <Collapse key={zone.id}>
-                                <Zone {...zone} />
-                            </Collapse>
-                        )
-                    })}
-                </TransitionGroup>
+            <div className='zones__inner'>
+                <ListItemAdd label='Zones' onClick={() => addZone()} />
+                <div className='zones__content'>
+                    <div className='zones__content-inner'>
+                        <TransitionGroup>
+                            {zones && [...zones].reverse().map((zone) => {
+                                return (
+                                    <Collapse key={zone.id}>
+                                        <Zone {...zone} />
+                                    </Collapse>
+                                )
+                            })}
+                        </TransitionGroup>
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -46,6 +49,7 @@ const Zone = (props) => {
     const [ zoneVisibility, setZoneVisibility ] = useState(true);
     const activeItem = useRecoilValue(recoilActiveItem);
     const mapDraw = useRecoilValue(recoilDrawReference);
+    const jobMode = useRecoilValue(recoilJobMode);
 
     const deleteZone = useSetRecoilState(recoilDeleteZone);
 
@@ -81,43 +85,40 @@ const Zone = (props) => {
                         tooltip='Edit zone name'
                         value={props.value}
                         onBlur={updateZone}
+                        size='small'
                     />
                     {props.status && <span className='zone__header-status'>Flight Status</span>}
                 </div>
-                <IconButton
-                    className='zone__accordion'
-                    onClick={() => setDropDown(!dropDown)}
-                >
-                    {dropDown ? <ArrowDropUp /> : <ArrowDropDown />}
-                </IconButton>
+                <div className='zone__header-actions'>
+                    <IconButton
+                        className='zone__header-delete'
+                        onClick={() => {
+                            mapDraw.current.changeMode('simple_select');
+                            deleteZone(props.id);
+                        }}
+                        disabled={jobMode === 'fly'}
+                    >
+                        <Delete fontSize='small' />
+                    </IconButton>
+                    <IconButton
+                        className='zone__accordion'
+                        onClick={() => setDropDown(!dropDown)}
+                        disabled={jobMode === 'fly'}
+                    >
+                        {dropDown ? <ArrowDropUp /> : <ArrowDropDown />}
+                    </IconButton>
+                </div>
             </div>
             <Collapse in={dropDown} timeout="auto">
-                <Markers {...props} />
-                <Boundaries  {...props} />
+                <div className='zone__content'>
+                    <Collapse in={jobMode === 'plan'}>
+                        <div className='zone__content-inner'>
+                            <Markers {...props} />
+                            <Boundaries  {...props} />
+                        </div>
+                    </Collapse>
+                </div>
             </Collapse>
-            <div className='zone__control'>
-                <IconButton
-                    className='job-action__start'
-                    onClick={() => {}}
-                >
-                    <PlayArrow fontSize='large' />
-                </IconButton>
-            </div>
-            <div className='zone__actions'>
-                <Button
-                    className='zone__header-delete'
-                    onClick={() => {
-                        mapDraw.current.changeMode('simple_select');
-                        deleteZone(props.id);
-                    }}
-                    endIcon={
-                        <Delete fontSize='small' />
-                    }
-                    variant='contained'
-                >
-                    Delete Zone
-                </Button>
-            </div>
         </div>
     )
 }

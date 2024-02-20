@@ -19,7 +19,7 @@ const ListItemAdd = (props) => {
                         disableRipple
                         onClick={onClick}
                     >
-                        <Add />
+                        <Add fontSize='small' />
                     </IconButton>
                 </span>
             </Tooltip>

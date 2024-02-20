@@ -99,6 +99,7 @@ const Map = () => {
 		});
 
 		map.current.on('draw.selectionchange', (e) => {
+			console.log(map.current.getStyle());
 			if (e.features.length > 0) {
 				setActiveItem(e.features[0].id);
 			}
@@ -134,6 +135,15 @@ const Map = () => {
 	}, []);
 
 	useEffect(() => {
+        if (map.current && mapCenter.length) {
+            map.current.flyTo({
+                center: mapCenter,
+                // zoom: mapZoom
+            });
+        }
+    }, [mapCenter]);
+
+	useEffect(() => {
 		
 		map.current = new MapboxGL.Map({
 			center: mapCenter,
@@ -147,8 +157,7 @@ const Map = () => {
 		mapGeolocate.current = new MapboxGL.GeolocateControl({
 			positionOptions: {
 				enableHighAccuracy: true
-			},
-			trackUserLocation: true
+			}
 		});
 
 		// Add geolocation controls to the map
